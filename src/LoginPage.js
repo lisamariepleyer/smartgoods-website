@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { UserContext } from './UserContext';
 
 function LoginPage() {
     let navigate = useNavigate();
-    const [uuid, setUuid] = useState(null);
+    const { uuid, setUuid } = useContext(UserContext);
     const [serverResponse, setServerResponse] = useState(null);
 
     const handleLogin = () => {
