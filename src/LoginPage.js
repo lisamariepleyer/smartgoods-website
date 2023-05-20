@@ -7,6 +7,7 @@ function LoginPage() {
     let navigate = useNavigate();
     const { uuid, setUuid } = useContext(UserContext);
     const [serverResponse, setServerResponse] = useState(null);
+    const [inputUUID, setInputUUID] = useState('');
 
     const handleLogin = () => {
         navigate('/main');
@@ -29,13 +30,31 @@ function LoginPage() {
         setServerResponse(responseData.message);
     }
 
+    const handleChangeInputUUID = (event) => {
+        setInputUUID(event.target.value);
+    }
+
+    const handleSubmitInputUUID = (event) => {
+        event.preventDefault();
+        console.log('UUID input:', inputUUID);
+        setUuid(inputUUID);
+        navigate('/main')
+    }
+
     return (
         <div>
             <h2>Login Page</h2>
             <input type="email" placeholder="Email" />
             <input type="password" placeholder="Password" />
+
             <button onClick={handleLogin}>Login</button>
             <button onClick={handleRegistration}>Register</button>
+
+            <br />
+
+            <input type="text" placeholder="UUID" value={inputUUID} onChange={handleChangeInputUUID}/>
+            <button onClick={handleSubmitInputUUID}>Submit</button>
+
             <p><a href="/forgotpassword">Forgot password?</a></p>
             {uuid && <div>{uuid}</div>}
             {serverResponse && <div>{serverResponse}</div>}
