@@ -7,6 +7,7 @@ function MainPage() {
     const { uuid } = useContext(UserContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [requirements, setRequirements] = useState([]);
+    const [inputUUID, setInputUUID] = useState('');
 
     useEffect(() => {
         fetchRequirements();
@@ -24,7 +25,7 @@ function MainPage() {
 
         try {
 
-            const response = await fetch('http://localhost:8080/requirement/list/all/58351c56-9bc6-449c-9273-67a58d2c213c');
+            const response = await fetch('http://localhost:8080/requirement/list/all/' + inputUUID);
 
             if (response.ok) {
                 const responseData = await response.json();
@@ -40,11 +41,22 @@ function MainPage() {
         }
     };
 
+    const handleInputUUID = (event) => {
+        setInputUUID(event.target.value);
+        event.preventDefault();
+        console.log('UUID input:', inputUUID);
+        fetchRequirements();
+    }
+
     return (
         <div>
             <h2>Main Page</h2>
-            <p>Your UUID is {uuid}</p>
+            <input type="text" placeholder="UUID" value={inputUUID} onChange={handleInputUUID} />
+            <button onClick={handleInputUUID}>Submit</button>
+            <p>Your UUID is: {inputUUID}</p>
+
             <RequirementsTable data={requirements} />
+
             <button onClick={handleCreateRequirement}>Create Requirement</button>
             <CreateRequirementForm isOpen={isModalOpen} onClose={handleModalClose} />
         </div>
