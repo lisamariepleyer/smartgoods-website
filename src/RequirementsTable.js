@@ -8,8 +8,8 @@ const RequirementsTable = ({ data }) => {
      */
     const extractRequirementText = (requirement) => {
         try {
-            const startMarker = 'requirement: ';
-            const endMarker = '\r\n}';
+            const startMarker = 'requirement:';
+            const endMarker = '}';
             const startIndex = requirement.indexOf(startMarker);
             const endIndex = requirement.indexOf(endMarker, startIndex + startMarker.length);
             if (startIndex !== -1 && endIndex !== -1) {
