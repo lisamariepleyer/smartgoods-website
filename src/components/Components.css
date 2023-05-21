@@ -1,0 +1,50 @@
+:root {
+    --primary-color: 63, 51, 78;
+    --secondary-color: 182, 170, 192;
+}
+
+.button-rectangle {
+    background-color: rgb(var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+.button-rectangle:hover {
+    transform: scale(1.1);
+}
+
+.button-fancy {
+    background-color: white;
+    color: rgb(var(--primary-color));
+    border: 1px solid rgb(var(--primary-color));
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+.button-fancy:hover {
+    transform: scale(1.1);
+    background: rgb(var(--primary-color));
+    color: #FFF;
+}
+
+.button-round {
+    background-color: rgb(var(--primary-color));
+    color: white;
+    border: none;
+    padding: 10px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    font-size: 16px;
+    transition: all 0.1s ease;
+}
+.button-round:hover {
+    transform: scale(0.9);
+    background: #FFF;
+    color: rgb(var(--primary-color));
+    border: 1px solid rgb(var(--primary-color));
+}
