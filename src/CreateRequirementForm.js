@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from './UserContext';
 import Modal from './Modal';
 
-function CreateRequirementForm({ isOpen, onClose }) {
+function CreateRequirementForm({ isOpen, onClose, fetchRequirements }) {
     const { uuid } = useContext(UserContext);
 
     const [systemName, setSystemName] = useState('');
@@ -42,7 +42,7 @@ function CreateRequirementForm({ isOpen, onClose }) {
     }
 
     const handleCheckRequirement = async () => {
-        const requirementSentence = ruppsScheme ? `${systemName} ${systemBehavior} ${abilityType} ${processWord} ${requirementDescription}` : systemRequirement;
+        const requirementSentence = ruppsScheme ? `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord} ${requirementDescription}` : systemRequirement;
 
         try {
             setLastButtonClicked('check');
@@ -69,7 +69,7 @@ function CreateRequirementForm({ isOpen, onClose }) {
     };
 
     const handleSaveRequirement = async () => {
-        const requirementSentence = ruppsScheme ? `${systemName} ${systemBehavior} ${abilityType} ${processWord} ${requirementDescription}` : systemRequirement;
+        const requirementSentence = ruppsScheme ? `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord} ${requirementDescription}` : systemRequirement;
         try {
             setLastButtonClicked('save');
             const response = await fetch(`http://localhost:8080/requirement/save/${uuid}`, {
@@ -83,6 +83,11 @@ function CreateRequirementForm({ isOpen, onClose }) {
             const responseData = await response.json();
 
             setSaveRequirementStatus(responseData.message);
+
+            fetchRequirements();
+
+            onClose();
+
         } catch (error) {
             console.error('Failed to save the requirement:', error);
         }
@@ -99,8 +104,8 @@ function CreateRequirementForm({ isOpen, onClose }) {
 
 
     useEffect(() => {
-        setValidationResult(null)
-    }, [systemName, systemBehavior, abilityType, whom, processWord, requirementDescription]);
+        setValidationResult(null); setSaveRequirementStatus(null)
+    }, [systemName, systemBehavior, abilityType, whom, processWord, requirementDescription, systemRequirement]);
 
     return (
         <Modal open={isOpen} onClose={onClose}>
