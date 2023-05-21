@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { UserContext } from './UserContext';
+import { Button, FancyButton, RoundButton } from './components/Button';
 
 function LoginPage() {
     let navigate = useNavigate();
@@ -44,16 +45,20 @@ function LoginPage() {
     return (
         <div>
             <h2>Login Page</h2>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
+            <hr className="divider" />
 
-            <button onClick={handleLogin}>Login</button>
-            <button onClick={handleRegistration}>Register</button>
+            <input className="input-field" type="email" placeholder="E-Mail" /><br />
+            <input className="input-field" type="password" placeholder="Password" /><br />
 
-            <br />
+            <Button onClick={handleLogin}>Login</Button><br />
+            <FancyButton onClick={handleRegistration}>Register</FancyButton><br />
 
-            <input type="text" placeholder="UUID" value={inputUUID} onChange={handleChangeInputUUID}/>
-            <button onClick={handleSubmitInputUUID}>Submit</button>
+            <hr className="short-divider" />
+
+            <input className="input-field" type="text" placeholder="UUID" value={inputUUID} onChange={handleChangeInputUUID}/>
+            <Button onClick={handleSubmitInputUUID}>Submit</Button>
+
+            <hr className="short-divider" />
 
             <p><a href="/forgotpassword">Forgot password?</a></p>
             {uuid && <div>{uuid}</div>}
