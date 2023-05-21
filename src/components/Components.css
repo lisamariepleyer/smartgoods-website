@@ -1,0 +1,95 @@
+/*
+    COLOUR SCHEME
+ */
+
+:root {
+    --primary-color: 63, 51, 78;
+    --secondary-color: 100, 81, 124;
+    --tertiary-color: 182, 170, 192;
+}
+
+/*
+    BUTTONS
+ */
+
+.button-rectangle {
+    background-color: rgb(var(--tertiary-color));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+.button-rectangle:hover {
+    transform: scale(1.1);
+}
+
+.button-fancy {
+    background-color: white;
+    color: rgb(var(--secondary-color));
+    border: 1px solid rgb(var(--secondary-color));
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+.button-fancy:hover {
+    transform: scale(1.1);
+    background: rgb(var(--primary-color));
+    color: #FFF;
+}
+
+.button-round {
+    background-color: rgb(var(--primary-color));
+    color: white;
+    border: none;
+    padding: 10px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: all 0.1s ease;
+}
+.button-round:hover {
+    transform: scale(0.9);
+    background: #FFF;
+    color: rgb(var(--primary-color));
+    border: 1px solid rgb(var(--primary-color));
+}
+
+/*
+    INPUT FIELDS
+ */
+
+.input-field {
+    border-radius: 20px;
+    border: 1px solid rgb(var(--secondary-color));
+    color: rgb(var(--secondary-color));
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.input-field::placeholder {
+    color: rgb(var(--tertiary-color));
+}
+
+/*
+    OTHER COMPONENTS
+ */
+
+h1 {
+    color: rgb(var(--secondary-color));
+    display: block;
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.container {
+    display: grid;
+    place-items: center;
+    margin: 40px 0px;
+}

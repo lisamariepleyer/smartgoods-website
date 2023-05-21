@@ -1,7 +1,11 @@
 import React, {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { v4 as uuidv4 } from 'uuid';
 import { UserContext } from './UserContext';
+
+import { Button, FancyButton, RoundButton } from './components/Button';
+import { LoginHeader } from './components/Header';
 
 function LoginPage() {
     let navigate = useNavigate();
@@ -43,19 +47,22 @@ function LoginPage() {
 
     return (
         <div>
-            <h2>Login Page</h2>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
+            <LoginHeader />
 
-            <button onClick={handleLogin}>Login</button>
-            <button onClick={handleRegistration}>Register</button>
+            <div className="container">
+                <input className="input-field" type="email" placeholder="E-Mail" />
+                <input className="input-field" type="password" placeholder="Password" />
 
-            <br />
+                <Button onClick={handleLogin}>Login</Button>
+                <FancyButton onClick={handleRegistration}>Register</FancyButton>
+            </div>
 
-            <input type="text" placeholder="UUID" value={inputUUID} onChange={handleChangeInputUUID}/>
-            <button onClick={handleSubmitInputUUID}>Submit</button>
+            <div className="container">
+                <input className="input-field" type="text" placeholder="UUID" value={inputUUID} onChange={handleChangeInputUUID}/>
+                <Button onClick={handleSubmitInputUUID}>Submit</Button>
+                <p><a href="/forgotpassword">Forgot password?</a></p>
+            </div>
 
-            <p><a href="/forgotpassword">Forgot password?</a></p>
             {uuid && <div>{uuid}</div>}
             {serverResponse && <div>{serverResponse}</div>}
         </div>
