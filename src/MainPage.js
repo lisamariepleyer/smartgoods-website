@@ -18,6 +18,7 @@ function MainPage() {
 
     const handleModalClose = () => {
         setIsModalOpen(false);
+        fetchRequirements();
     }
 
     const fetchRequirements = async () => {
@@ -48,7 +49,7 @@ function MainPage() {
             <RequirementsTable data={requirements} />
 
             <button onClick={handleCreateRequirement}>Create Requirement</button>
-            <CreateRequirementForm isOpen={isModalOpen} onClose={handleModalClose} />
+            <CreateRequirementForm isOpen={isModalOpen} onClose={handleModalClose} fetchRequirements={fetchRequirements} />
         </div>
     );
 }
