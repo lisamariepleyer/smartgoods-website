@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from './LoginPage';
-import MainPage from './MainPage';
-import { UserContext } from './UserContext';
+import LoginPage from './pages/LoginPage';
+import MainPage from './pages/MainPage';
+import { UserContext } from './common/UserContext';
 
 function App() {
     const [uuid, setUuid] = useState(null);

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { UserContext } from './UserContext';
-import Modal from './Modal';
+import { UserContext } from '../common/UserContext';
+import Modal from '../common/Modal';
 
 function CreateRequirementForm({ isOpen, onClose, fetchRequirements }) {
     const { uuid } = useContext(UserContext);
