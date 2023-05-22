@@ -22,18 +22,18 @@ const RequirementsTable = ({ data }) => {
     };
     
     return (
-        <table>
+        <table className="requirements-table">
             <thead>
             <tr>
-                <th>Requirement</th>
                 <th>Validity</th>
+                <th>Requirement</th>
             </tr>
             </thead>
             <tbody>
             {data.map((item) => (
                 <tr key={item.id}>
-                    <td>{extractRequirementText(item.requirement)}</td>
                     <td>{item.ruppScheme ? '✅' : '❌'}</td>
+                    <td>{extractRequirementText(item.requirement)}</td>
                 </tr>
             ))}
             </tbody>
