@@ -11,8 +11,10 @@ function MainPage() {
     const [requirements, setRequirements] = useState([]);
 
     useEffect(() => {
-        fetchRequirementsFromServer();
-    }, []);
+        if (uuid) {
+            fetchRequirementsFromServer();
+        }
+    }, [uuid]);
 
     const fetchRequirementsFromServer = async () => {
         try {
