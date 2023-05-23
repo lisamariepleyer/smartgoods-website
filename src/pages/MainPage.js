@@ -28,7 +28,7 @@ function MainPage() {
             <MainHeader onPopupClose={fetchRequirementsFromServer}/>
 
             <p>Your UUID is: {uuid}</p>
-            <RequirementsTable data={requirements} />
+            <RequirementsTable data={requirements} updateRequirements={fetchRequirementsFromServer}/>
         </div>
     );
 }
