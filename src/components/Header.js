@@ -1,9 +1,10 @@
 import React, {useContext, useState} from 'react';
+
 import logoImage from '../img/smartgoods_logo.png';
-import {RoundButton} from "./Button";
+import { RoundButton } from "./Button";
 import CreateRequirementForm from "../pages/CreateRequirementForm";
-import {fetchRequirements} from "../common/FetchRequirements";
-import {UserContext} from "../common/UserContext";
+import { fetchRequirements } from "../common/FetchRequirements";
+import { UserContext } from "../common/UserContext";
 
 const LoginHeader = () => {
     return (
@@ -14,28 +15,26 @@ const LoginHeader = () => {
     );
 };
 
-const MainHeader = () => {
+const MainHeader = ({ onPopupClose }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { uuid } = useContext(UserContext);
     const [requirements, setRequirements] = useState([]);
 
-    const fetchRequirementsFromServer = async () => {
+    const handleCreateRequirement = () => {
+        setIsModalOpen(true);
+    }
+
+    const handleCreateRequirementClose = async () => {
         try {
             const response = await fetchRequirements(uuid);
             setRequirements(response);
         } catch (error) {
             throw new Error('Request failed');
         }
-    };
 
-    const handleCreateRequirement = () => {
-        setIsModalOpen(true);
-    }
-
-    const handleModalClose = () => {
         setIsModalOpen(false);
-        fetchRequirementsFromServer();
-    }
+        onPopupClose();
+    };
 
     return (
         <header className="header-container">
@@ -50,9 +49,7 @@ const MainHeader = () => {
                 {isModalOpen && (
                     <CreateRequirementForm
                         isOpen={isModalOpen}
-                        onClose={handleModalClose}
-                        //fetchRequirements={fetchRequirementsFromServer}
-                            //{() => setIsModalOpen(false)}
+                        onClose={handleCreateRequirementClose}
                     />
                 )}
                 <RoundButton>P</RoundButton>

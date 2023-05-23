@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../common/UserContext';
 import Modal from '../common/Modal';
 
-function CreateRequirementForm({ isOpen, onClose, fetchRequirements }) {
+function CreateRequirementForm({ isOpen, onClose }) {
     const { uuid } = useContext(UserContext);
 
     const [systemName, setSystemName] = useState('');
@@ -83,8 +83,6 @@ function CreateRequirementForm({ isOpen, onClose, fetchRequirements }) {
             const responseData = await response.json();
 
             setSaveRequirementStatus(responseData.message);
-
-            fetchRequirements();
 
             onClose();
 
