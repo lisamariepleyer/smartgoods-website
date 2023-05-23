@@ -2,10 +2,10 @@ import React, {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
-import { UserContext } from './UserContext';
+import { UserContext } from '../common/UserContext';
 
-import { Button, FancyButton, RoundButton } from './components/Button';
-import { LoginHeader } from './components/Header';
+import { Button, FancyButton } from '../components/Button';
+import { LoginHeader } from '../components/Header';
 
 function LoginPage() {
     let navigate = useNavigate();
@@ -49,7 +49,7 @@ function LoginPage() {
         <div>
             <LoginHeader />
 
-            <div className="container">
+            <div className="login-container">
                 <input className="input-field" type="email" placeholder="E-Mail" />
                 <input className="input-field" type="password" placeholder="Password" />
 
@@ -57,7 +57,7 @@ function LoginPage() {
                 <FancyButton onClick={handleRegistration}>Register</FancyButton>
             </div>
 
-            <div className="container">
+            <div className="login-container">
                 <input className="input-field" type="text" placeholder="UUID" value={inputUUID} onChange={handleChangeInputUUID}/>
                 <Button onClick={handleSubmitInputUUID}>Submit</Button>
                 <p><a href="/forgotpassword">Forgot password?</a></p>

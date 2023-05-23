@@ -51,7 +51,7 @@
     width: 50px;
     border-radius: 50%;
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-left: 10px;
     transition: all 0.1s ease;
 }
 .button-round:hover {
@@ -78,6 +78,51 @@
 }
 
 /*
+    REQUIREMENTS TABLE
+ */
+
+.requirements-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.requirements-table th,
+.requirements-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.requirements-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+.requirements-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.requirements-table tbody tr:hover {
+    background-color: #eaf6ff;
+}
+.requirements-table td:first-child {
+    width: 50px; /* Adjust the desired width for the first column */
+    text-align: center; /* Align text to the left in the first column */
+}
+
+/*
+    HEADERS
+ */
+
+.login-container {
+    display: grid;
+    place-items: center;
+    margin: 40px 0px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 40px 0px;
+}
+
+/*
     OTHER COMPONENTS
  */
 
@@ -86,10 +131,4 @@ h1 {
     display: block;
     font-size: 3em;
     font-weight: bold;
-}
-
-.container {
-    display: grid;
-    place-items: center;
-    margin: 40px 0px;
 }
