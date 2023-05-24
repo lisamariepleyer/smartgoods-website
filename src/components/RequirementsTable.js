@@ -1,6 +1,7 @@
 import React from 'react';
+import {fetchRequirements} from "../common/FetchRequirements";
 
-const RequirementsTable = ({ data }) => {
+const RequirementsTable = ({ data, updateRequirements }) => {
 
     /* Requirement is returned packaged in some additional text:
      "{\r\n    requirement: Some text.\r\n}"
@@ -20,13 +21,31 @@ const RequirementsTable = ({ data }) => {
             return 'error';
         }
     };
-    
+
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8080/requirement/delete/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete requirement');
+            }
+
+            updateRequirements();
+        } catch (error) {
+            console.error('Failed to delete requirement:', error);
+        }
+    };
+
     return (
         <table className="requirements-table">
             <thead>
             <tr>
                 <th>Validity</th>
                 <th>Requirement</th>
+                <th>Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +53,7 @@ const RequirementsTable = ({ data }) => {
                 <tr key={item.id}>
                     <td>{item.ruppScheme ? '✅' : '❌'}</td>
                     <td>{extractRequirementText(item.requirement)}</td>
+                    <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
                 </tr>
             ))}
             </tbody>

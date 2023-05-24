@@ -11,8 +11,10 @@ function MainPage() {
     const [requirements, setRequirements] = useState([]);
 
     useEffect(() => {
-        fetchRequirementsFromServer();
-    }, []);
+        if (uuid) {
+            fetchRequirementsFromServer();
+        }
+    }, [uuid]);
 
     const fetchRequirementsFromServer = async () => {
         try {
@@ -28,7 +30,7 @@ function MainPage() {
             <MainHeader onPopupClose={fetchRequirementsFromServer}/>
 
             <p>Your UUID is: {uuid}</p>
-            <RequirementsTable data={requirements} />
+            <RequirementsTable data={requirements} updateRequirements={fetchRequirementsFromServer}/>
         </div>
     );
 }
