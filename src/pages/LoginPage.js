@@ -9,24 +9,48 @@ import { LoginHeader } from '../components/Header';
 
 function LoginPage() {
     let navigate = useNavigate();
-    const { uuid, setUuid } = useContext(UserContext);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [isRegistering, setIsRegistering] = useState(false);
     const [serverResponse, setServerResponse] = useState(null);
-    const [inputUUID, setInputUUID] = useState('');
 
-    const handleLogin = () => {
-        navigate('/main');
+    const handleLogin = async () => {
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v2/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            });
+
+            const responseData = await response.json();
+
+            if (username != responseData.username) {
+                setServerResponse(responseData.info);
+            } else {
+                setServerResponse('Logging in ...');
+                //navigate('/main');
+            }
+
+        } catch (error) {
+            setServerResponse(error);
+            console.error('Log in failed:', error);
+        }
     }
 
     const handleRegistration = async () => {
-        const newUuid = uuidv4();
-        setUuid(newUuid);
 
         const response = await fetch(`http://localhost:8080/user/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ uuid: newUuid })
+            body: JSON.stringify({ uuid: uuidv4() })
         });
 
         const responseData = await response.json();
@@ -34,36 +58,41 @@ function LoginPage() {
         setServerResponse(responseData.message);
     }
 
-    const handleChangeInputUUID = (event) => {
-        setInputUUID(event.target.value);
+    const handleRegistrationButtonClicked = () => {
+        setIsRegistering(true);
     }
 
-    const handleSubmitInputUUID = (event) => {
-        event.preventDefault();
-        console.log('UUID input:', inputUUID);
-        setUuid(inputUUID);
-        navigate('/main')
-    }
+    const handleUsernameInput = (event) => {
+        setUsername(event.target.value);
+    };
+
+    const handlePasswordInput = (event) => {
+        setPassword(event.target.value);
+    };
 
     return (
         <div>
             <LoginHeader />
 
             <div className="login-container">
-                <input className="input-field" type="email" placeholder="E-Mail" />
-                <input className="input-field" type="password" placeholder="Password" />
+                <input className="input-field" type="username" placeholder="Username" onChange={handleUsernameInput}/>
+                <input className="input-field" type="password" placeholder="Password" onChange={handlePasswordInput}/>
 
                 <Button onClick={handleLogin}>Login</Button>
-                <FancyButton onClick={handleRegistration}>Register</FancyButton>
             </div>
 
-            <div className="login-container">
-                <input className="input-field" type="text" placeholder="UUID" value={inputUUID} onChange={handleChangeInputUUID}/>
-                <Button onClick={handleSubmitInputUUID}>Submit</Button>
-                <p><a href="/forgotpassword">Forgot password?</a></p>
-            </div>
+            { isRegistering ? (
+                <div className="login-container">
+                    <p><a href="/forgotpassword">Forgot password?</a></p>
+                    <FancyButton onClick={handleRegistrationButtonClicked}>Registering</FancyButton>
+                </div>
+            ) : (
+                <div className="login-container">
+                    <p><a href="/forgotpassword">Forgot password?</a></p>
+                    <FancyButton onClick={handleRegistrationButtonClicked}>Register</FancyButton>
+                </div>
+            ) }
 
-            {uuid && <div>{uuid}</div>}
             {serverResponse && <div>{serverResponse}</div>}
         </div>
     );
