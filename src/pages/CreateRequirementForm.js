@@ -1,16 +1,18 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../common/UserContext';
 import Modal from '../common/Modal';
+import { Button, FancyButton } from "../components/Button";
 
 function CreateRequirementForm({ isOpen, onClose }) {
     const { uuid } = useContext(UserContext);
 
-    const [systemName, setSystemName] = useState('');
+    let requirement = '';
+
+    const [systemName, setSystemName] = useState('The system');
     const [systemBehavior, setSystemBehavior] = useState('shall');
     const [abilityType, setAbilityType] = useState('');
     const [whom, setWhom] = useState('');
     const [processWord, setProcessWord] = useState('');
-    const [requirementDescription, setRequirementDescription] = useState('');
     const [validationResult, setValidationResult] = useState(null);
     const [saveRequirementStatus, setSaveRequirementStatus] = useState('null');
     const [lastButtonClicked, setLastButtonClicked] = useState(null);
@@ -37,12 +39,16 @@ function CreateRequirementForm({ isOpen, onClose }) {
         setProcessWord(event.target.value);
     }
 
-    const handeRequirementDescription = (event) => {
-        setRequirementDescription(event.target.value);
+    const buildRequirement = () => {
+        if (abilityType === 'be able to') {
+            requirement = `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord}`;
+        }
+        requirement = `${systemName || 'The System'} ${systemBehavior} provide ${whom} with the ability to ${processWord}`;
+        return(requirement);
     }
 
     const handleCheckRequirement = async () => {
-        const requirementSentence = ruppsScheme ? `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord} ${requirementDescription}` : systemRequirement;
+        const requirementSentence = ruppsScheme ? buildRequirement() : systemRequirement;
 
         try {
             setLastButtonClicked('check');
@@ -69,7 +75,7 @@ function CreateRequirementForm({ isOpen, onClose }) {
     };
 
     const handleSaveRequirement = async () => {
-        const requirementSentence = ruppsScheme ? `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord} ${requirementDescription}` : systemRequirement;
+        const requirementSentence = ruppsScheme ? buildRequirement() : systemRequirement;
         try {
             setLastButtonClicked('save');
             const response = await fetch(`http://localhost:8080/requirement/save/${uuid}`, {
@@ -103,11 +109,10 @@ function CreateRequirementForm({ isOpen, onClose }) {
 
     useEffect(() => {
         setValidationResult(null); setSaveRequirementStatus(null)
-    }, [systemName, systemBehavior, abilityType, whom, processWord, requirementDescription, systemRequirement]);
+    }, [systemName, systemBehavior, abilityType, whom, processWord, systemRequirement]);
 
     return (
-        <Modal open={isOpen} onClose={onClose}>
-            <h2>Create Requirement</h2>
+        <Modal open={isOpen} onClose={onClose} popupName={'Create Requirement'}>
             <label>
                 <input type="checkbox" checked={ruppsScheme} onChange={handleRuppsSchemeChange} />
                 Rupp's scheme
@@ -117,13 +122,11 @@ function CreateRequirementForm({ isOpen, onClose }) {
             { ruppsScheme ? (
                 <>
                     <label>
-                        System name:<br/>
-                        <input type="text" value={systemName} onChange={handleSystemNameChange} />
+                        <input className="input-field" type="text" value={systemName} placeholder={'The system'} onChange={handleSystemNameChange} />
                     </label>
                     <br/>
                     <br/>
                     <label>
-                        {systemName || 'The System'}:<br/>
                         <select value={systemBehavior} onChange={handleSystemBehaviorChange}>
                             <option value="shall">shall</option>
                             <option value="should">should</option>
@@ -138,39 +141,33 @@ function CreateRequirementForm({ isOpen, onClose }) {
                     </label>
                     <br/>
                     <label>
-                        <input type="radio" value={`provide ${whom || '[whom]'} with the ability to`} checked={abilityType === `provide ${whom || '[whom]'} with the ability to`} onChange={handleAbilityTypeChange} />
+                        <input type="radio" value="provide [whom] with the ability to" checked={abilityType === "provide [whom] with the ability to"} onChange={handleAbilityTypeChange} />
                         provide {whom || '[whom]'} with the ability to
                     </label>
                     <br/>
                     <br/>
                     <label>
-                        Whom:<br/>
-                        <input type="text" value={whom} onChange={handleWhomChange} />
+                    {(abilityType === "provide [whom] with the ability to") && (
+                        <input className="input-field" type="text" value={whom} placeholder={'whom'} onChange={handleWhomChange} />
+                    )}
                     </label>
                     <br/>
                     <br/>
                     <label>
-                        Process word:<br/>
-                        <input type="text" value={processWord} onChange={handleProcessWord} />
-                    </label>
-                    <br/>
-                    <br/>
-                    <label>
-                        Description of the requirement:<br/>
-                        <input type="text" value={requirementDescription} onChange={handeRequirementDescription} />
+                        <input className="input-field" type="text" value={processWord} placeholder={'Process word'} onChange={handleProcessWord} />
                     </label>
                     <br/>
                     <br/>
                     Full requirement:<br/>
-                    {systemBehavior && abilityType && processWord && requirementDescription &&
-                        `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord} ${requirementDescription}`
+                    {systemBehavior && abilityType && processWord &&
+                        buildRequirement()
                     }
                 </>
             ) : (
                 <>
+                    System Requirement:<br/><br/>
                     <label>
-                        System Requirement:<br/>
-                        <input type="text" value={systemRequirement} onChange={handleSystemRequirementChange} />
+                        <input className="input-field" type="text" value={systemRequirement} onChange={handleSystemRequirementChange} />
                     </label>
                     <br/>
                     <br/>
@@ -193,7 +190,8 @@ function CreateRequirementForm({ isOpen, onClose }) {
 
             <br/>
             <br/>
-            <button onClick={handleCheckRequirement}>Check</button> <button onClick={handleSaveRequirement}>Save</button>
+            <Button onClick={handleCheckRequirement}>Check</Button><br/>
+            <FancyButton onClick={handleSaveRequirement}>Save</FancyButton>
             <br/>
         </Modal>
     )
