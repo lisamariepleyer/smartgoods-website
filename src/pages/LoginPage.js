@@ -11,12 +11,15 @@ function LoginPage() {
     let navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
     const [serverResponse, setServerResponse] = useState(null);
 
     const handleLogin = async () => {
 
         try {
+
             const response = await fetch('http://localhost:8080/api/v2/users/login', {
                 method: 'POST',
                 headers: {
@@ -30,7 +33,7 @@ function LoginPage() {
 
             const responseData = await response.json();
 
-            if (username != responseData.username) {
+            if (username !== responseData.username) {
                 setServerResponse(responseData.info);
             } else {
                 setServerResponse('Logging in ...');
@@ -38,6 +41,7 @@ function LoginPage() {
             }
 
         } catch (error) {
+
             setServerResponse(error);
             console.error('Log in failed:', error);
         }
@@ -45,17 +49,38 @@ function LoginPage() {
 
     const handleRegistration = async () => {
 
-        const response = await fetch(`http://localhost:8080/user/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ uuid: uuidv4() })
-        });
+        try {
 
-        const responseData = await response.json();
+            const response = await fetch('http://localhost:8080/api/v2/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName,
+                    password: password
+                })
+            });
 
-        setServerResponse(responseData.message);
+            const responseData = await response.json();
+
+            if (username !== responseData.username) {
+                setServerResponse(responseData.info);
+            } else {
+                setServerResponse('Registered!');
+                setIsRegistering(false);
+                //navigate('/main');
+            }
+
+        } catch (error) {
+
+            setServerResponse(error);
+            console.error('Log in failed:', error);
+
+        }
+
     }
 
     const handleRegistrationButtonClicked = () => {
@@ -64,6 +89,14 @@ function LoginPage() {
 
     const handleUsernameInput = (event) => {
         setUsername(event.target.value);
+    };
+
+    const handleFirstNameInput = (event) => {
+        setFirstName(event.target.value);
+    };
+
+    const handleLastNameInput = (event) => {
+        setLastName(event.target.value);
     };
 
     const handlePasswordInput = (event) => {
@@ -83,8 +116,12 @@ function LoginPage() {
 
             { isRegistering ? (
                 <div className="login-container">
-                    <p><a href="/forgotpassword">Forgot password?</a></p>
-                    <FancyButton onClick={handleRegistrationButtonClicked}>Registering</FancyButton>
+                    <input className="input-field" type="username" placeholder="Username" onChange={handleUsernameInput}/>
+                    <input className="input-field" type="firstName" placeholder="First Name" onChange={handleFirstNameInput}/>
+                    <input className="input-field" type="lastName" placeholder="Last Name" onChange={handleLastNameInput}/>
+                    <input className="input-field" type="password" placeholder="Password" onChange={handlePasswordInput}/>
+
+                    <FancyButton onClick={handleRegistration}>Register</FancyButton>
                 </div>
             ) : (
                 <div className="login-container">
