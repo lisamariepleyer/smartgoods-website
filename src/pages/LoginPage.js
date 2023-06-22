@@ -1,7 +1,6 @@
 import React, {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { v4 as uuidv4 } from 'uuid';
 import { UserContext } from '../common/UserContext';
 
 import { Button, FancyButton } from '../components/Button';
@@ -9,10 +8,13 @@ import { LoginHeader } from '../components/Header';
 
 function LoginPage() {
     let navigate = useNavigate();
+    const { currentUser, setCurrentUser } = useContext(UserContext);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+
     const [isRegistering, setIsRegistering] = useState(false);
     const [serverResponse, setServerResponse] = useState(null);
 
@@ -36,14 +38,15 @@ function LoginPage() {
             if (username !== responseData.username) {
                 setServerResponse(responseData.info);
             } else {
-                setServerResponse('Logging in ...');
-                //navigate('/main');
+                setCurrentUser(username);
+                navigate('/main');
             }
 
         } catch (error) {
 
             setServerResponse(error);
             console.error('Log in failed:', error);
+
         }
     }
 
@@ -71,7 +74,8 @@ function LoginPage() {
             } else {
                 setServerResponse('Registered!');
                 setIsRegistering(false);
-                //navigate('/main');
+                setCurrentUser(username);
+                navigate('/main');
             }
 
         } catch (error) {
@@ -84,7 +88,7 @@ function LoginPage() {
     }
 
     const handleRegistrationButtonClicked = () => {
-        setIsRegistering(true);
+        setIsRegistering(!isRegistering);
     }
 
     const handleUsernameInput = (event) => {

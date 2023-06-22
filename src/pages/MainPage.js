@@ -7,18 +7,19 @@ import RequirementsTable from '../components/RequirementsTable';
 import { MainHeader } from '../components/Header';
 
 function MainPage() {
-    const { uuid } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
     const [requirements, setRequirements] = useState([]);
+    const dev = true;
 
     useEffect(() => {
-        if (uuid) {
+        if (currentUser) {
             fetchRequirementsFromServer();
         }
-    }, [uuid]);
+    }, [currentUser]);
 
     const fetchRequirementsFromServer = async () => {
         try {
-            const response = await fetchRequirements(uuid);
+            const response = await fetchRequirements(currentUser);
             setRequirements(response);
         } catch (error) {
             throw new Error('Request failed');
@@ -27,10 +28,18 @@ function MainPage() {
 
     return (
         <div>
-            <MainHeader onPopupClose={fetchRequirementsFromServer}/>
+            { dev ? (
+                <div>
+                    <p>Your username is: {currentUser}</p>
+                </div>
+            ) : (
+                <div>
+                    <MainHeader onPopupClose={fetchRequirementsFromServer}/>
 
-            <p>Your UUID is: {uuid}</p>
-            <RequirementsTable data={requirements} updateRequirements={fetchRequirementsFromServer}/>
+                    <p>Your UUID is: {currentUser}</p>
+                    <RequirementsTable data={requirements} updateRequirements={fetchRequirementsFromServer}/>
+                </div>
+            ) }
         </div>
     );
 }

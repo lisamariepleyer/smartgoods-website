@@ -5,10 +5,10 @@ import MainPage from './pages/MainPage';
 import { UserContext } from './common/UserContext';
 
 function App() {
-    const [uuid, setUuid] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
 
     return (
-        <UserContext.Provider value={{ uuid, setUuid }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
             <Router>
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
