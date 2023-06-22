@@ -123,12 +123,19 @@
 }
 
 /*
-    OTHER COMPONENTS
+    HEADERS
  */
 
 h1 {
     color: rgb(var(--secondary-color));
     display: block;
     font-size: 3em;
+    font-weight: bold;
+}
+
+h2 {
+    color: rgb(var(--secondary-color));
+    display: block;
+    font-size: 2em;
     font-weight: bold;
 }
