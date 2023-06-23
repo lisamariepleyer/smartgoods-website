@@ -1,6 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 const RequirementsTable = ({ data, updateRequirements }) => {
+
+    const [hoveredRow, setHoveredRow] = useState(null);
+
+    const handleRowHover = (hint) => {
+        setHoveredRow(hint);
+    };
 
     const handleDelete = async (id) => {
         try {
@@ -19,24 +25,35 @@ const RequirementsTable = ({ data, updateRequirements }) => {
     };
 
     return (
-        <table className="requirements-table">
-            <thead>
-            <tr>
-                <th>Validity</th>
-                <th>Requirement</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            {data.map((item) => (
-                <tr key={item.id}>
-                    <td>{item.isRuppScheme === "true" ? '✅' : '❌'}</td>
-                    <td>{item.requirement}</td>
-                    <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
+        <div>
+            <table className="requirements-table">
+                <thead>
+                <tr>
+                    <th>Validity</th>
+                    <th>Requirement</th>
+                    <th>Delete</th>
                 </tr>
-            ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {data.map((item) => (
+                    <tr
+                        key={item.id}
+                        onMouseEnter={() => handleRowHover(item.hint)}
+                        onMouseLeave={() => handleRowHover(null)}
+                    >
+                        <td>{item.isRuppScheme === "true" ? '✅' : '❌'}</td>
+                        <td>{item.requirement}</td>
+                        <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+            {hoveredRow && (
+                <div>
+                    Hint: {hoveredRow}
+                </div>
+            )}
+        </div>
     );
 };
 
