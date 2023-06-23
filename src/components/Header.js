@@ -3,7 +3,7 @@ import React, {useContext, useState} from 'react';
 import logoImage from '../img/smartgoods_logo.png';
 import { RoundButton } from "./Button";
 import CreateRequirementForm from "../pages/CreateRequirementForm";
-import { fetchRequirements } from "../common/FetchRequirements";
+import { fetchProjects } from "../common/FetchProjects";
 import { UserContext } from "../common/UserContext";
 
 const LoginHeader = () => {
@@ -26,7 +26,7 @@ const MainHeader = ({ onPopupClose }) => {
 
     const handleCreateRequirementClose = async () => {
         try {
-            const response = await fetchRequirements(uuid);
+            const response = await fetchProjects(uuid);
             setRequirements(response);
         } catch (error) {
             throw new Error('Request failed');
