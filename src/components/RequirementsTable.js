@@ -4,7 +4,7 @@ const RequirementsTable = ({ data, updateRequirements }) => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/requirement/delete/${id}`, {
+            const response = await fetch(`http://localhost:8080/api/v2/requirements/${id}`, {
                 method: 'DELETE',
             });
 
