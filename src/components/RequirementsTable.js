@@ -1,27 +1,6 @@
 import React from 'react';
-import {fetchRequirements} from "../common/FetchRequirements";
 
 const RequirementsTable = ({ data, updateRequirements }) => {
-
-    /* Requirement is returned packaged in some additional text:
-     "{\r\n    requirement: Some text.\r\n}"
-     This function returns the raw requirement which should be shown to the user.
-     */
-    const extractRequirementText = (requirement) => {
-        try {
-            const startMarker = 'requirement:';
-            const endMarker = '}';
-            const startIndex = requirement.indexOf(startMarker);
-            const endIndex = requirement.indexOf(endMarker, startIndex + startMarker.length);
-            if (startIndex !== -1 && endIndex !== -1) {
-                return requirement.substring(startIndex + startMarker.length, endIndex);
-            }
-        } catch (error) {
-            console.error('Error parsing requirement:', error);
-            return 'error';
-        }
-    };
-
 
     const handleDelete = async (id) => {
         try {
@@ -51,8 +30,8 @@ const RequirementsTable = ({ data, updateRequirements }) => {
             <tbody>
             {data.map((item) => (
                 <tr key={item.id}>
-                    <td>{item.ruppScheme ? '✅' : '❌'}</td>
-                    <td>{extractRequirementText(item.requirement)}</td>
+                    <td>{item.isRuppScheme === "true" ? '✅' : '❌'}</td>
+                    <td>{item.requirement}</td>
                     <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
                 </tr>
             ))}

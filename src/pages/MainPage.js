@@ -1,26 +1,26 @@
 import React, { useContext, useState, useEffect } from 'react';
 
-import { fetchRequirements } from "../common/FetchRequirements";
+import { fetchProjects } from "../common/FetchProjects";
 import { UserContext } from '../common/UserContext';
 
 import RequirementsTable from '../components/RequirementsTable';
 import { MainHeader } from '../components/Header';
+import Collapsible from "../components/Collapsible";
 
 function MainPage() {
     const { currentUser } = useContext(UserContext);
-    const [requirements, setRequirements] = useState([]);
-    const dev = true;
+    const [projects, setProjects] = useState([]);
 
     useEffect(() => {
         if (currentUser) {
-            fetchRequirementsFromServer();
+            fetchProjectsFromServer();
         }
     }, [currentUser]);
 
-    const fetchRequirementsFromServer = async () => {
+    const fetchProjectsFromServer = async () => {
         try {
-            const response = await fetchRequirements(currentUser);
-            setRequirements(response);
+            const response = await fetchProjects(currentUser);
+            setProjects(response);
         } catch (error) {
             throw new Error('Request failed');
         }
@@ -28,18 +28,15 @@ function MainPage() {
 
     return (
         <div>
-            { dev ? (
-                <div>
-                    <p>Your username is: {currentUser}</p>
+            <MainHeader onPopupClose={fetchProjectsFromServer}/>
+            <p>Hi {currentUser}!</p>
+            {projects.map(project => (
+                <div key={project.id}>
+                    <Collapsible label={project.projectName}>
+                        <RequirementsTable data={project.requirements} updateRequirements={fetchProjectsFromServer}/>
+                    </Collapsible>
                 </div>
-            ) : (
-                <div>
-                    <MainHeader onPopupClose={fetchRequirementsFromServer}/>
-
-                    <p>Your UUID is: {currentUser}</p>
-                    <RequirementsTable data={requirements} updateRequirements={fetchRequirementsFromServer}/>
-                </div>
-            ) }
+            ))}
         </div>
     );
 }
