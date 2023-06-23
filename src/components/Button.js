@@ -25,4 +25,12 @@ const RoundButton = ({ children, onClick }) => {
     );
 };
 
-export { Button, FancyButton, RoundButton };
+const CollapsibleButton = ({ children, onClick }) => {
+    return (
+        <button className="button-collapsible" onClick={onClick}>
+            {children}
+        </button>
+    )
+}
+
+export { Button, FancyButton, RoundButton, CollapsibleButton };

@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 
-import { fetchProjects } from "../common/FetchProjects";
 import { UserContext } from '../common/UserContext';
 
-import RequirementsTable from '../components/RequirementsTable';
+import { fetchProjects } from "../common/FetchProjects";
 import { MainHeader } from '../components/Header';
+import RequirementsTable from '../components/RequirementsTable';
 import Collapsible from "../components/Collapsible";
 
 function MainPage() {

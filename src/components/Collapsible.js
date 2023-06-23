@@ -12,7 +12,7 @@ const Collapsible = (props) => {
         <div>
             <CollapsibleButton onClick={toggle}>
                 <span className="button-collapsible-icon">{collapsibleOpen ? '↓' : '→'}</span>
-                <span className="text"> {props.label}</span>
+                <span className="text">{props.label}</span>
             </CollapsibleButton>
             {collapsibleOpen && (
                 <div className="toggle">
