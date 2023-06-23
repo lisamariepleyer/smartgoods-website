@@ -49,9 +49,11 @@ const RequirementsTable = ({ data, updateRequirements }) => {
                 </tbody>
             </table>
             {hoveredRow && (
-                <div>
-                    Hint: {hoveredRow}
-                </div>
+                <span className="tooltip">
+                    <span className="tooltiptext">
+                        Hint: {hoveredRow}
+                    </span>
+                </span>
             )}
         </div>
     );
