@@ -28,7 +28,7 @@ function MainPage() {
 
     return (
         <div>
-            <MainHeader onPopupClose={fetchProjectsFromServer}/>
+            <MainHeader onPopupClose={fetchProjectsFromServer} projects={projects}/>
             <p>Hi {currentUser}!</p>
             {projects.map(project => (
                 <div key={project.id}>

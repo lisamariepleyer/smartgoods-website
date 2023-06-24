@@ -18,7 +18,7 @@ const LoginHeader = () => {
     );
 };
 
-const MainHeader = ({ onPopupClose }) => {
+const MainHeader = ({ onPopupClose, projects }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { uuid } = useContext(UserContext);
     const [requirements, setRequirements] = useState([]);
@@ -73,6 +73,8 @@ const MainHeader = ({ onPopupClose }) => {
                     <CreateRequirementForm
                         isOpen={chosenAction === 'requirement'}
                         onClose={() => setChosenAction(null)}
+                        projects={projects}
+                        onUpdateProjects={onPopupClose}
                     />
                 )}
                 <RoundButton>P</RoundButton>
