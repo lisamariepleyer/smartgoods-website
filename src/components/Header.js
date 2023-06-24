@@ -2,9 +2,12 @@ import React, {useContext, useState} from 'react';
 
 import logoImage from '../img/smartgoods_logo.png';
 import { RoundButton } from "./Button";
-import CreateRequirementForm from "../pages/CreateRequirementForm";
+import CreateRequirementForm from "../popups/CreateRequirementForm";
+import CreateProjectForm from "../popups/CreateProjectForm"
+import ChooseActionPopup from "../popups/ChooseActionPopup";
 import { fetchProjects } from "../common/FetchProjects";
 import { UserContext } from "../common/UserContext";
+
 
 const LoginHeader = () => {
     return (
@@ -20,8 +23,16 @@ const MainHeader = ({ onPopupClose }) => {
     const { uuid } = useContext(UserContext);
     const [requirements, setRequirements] = useState([]);
 
-    const handleCreateRequirement = () => {
-        setIsModalOpen(true);
+    const [showChooseActionPopup, setShowChooseActionPopup] = useState(false);
+    const [chosenAction, setChosenAction] = useState(null);
+
+    const handlePlusButton = () => {
+        setShowChooseActionPopup(true);
+    }
+
+    const handleChooseAction = (action) => {
+        setChosenAction(action);
+        setShowChooseActionPopup(false);
     }
 
     const handleCreateRequirementClose = async () => {
@@ -45,11 +56,23 @@ const MainHeader = ({ onPopupClose }) => {
                 <h1>Smart Goods</h1>
             </div>
             <div className="buttons" style={{marginTop: "35px"}}>
-                <RoundButton onClick={handleCreateRequirement}>+</RoundButton>
-                {isModalOpen && (
+                <RoundButton onClick={handlePlusButton}>+</RoundButton>
+                <ChooseActionPopup
+                    open={showChooseActionPopup}
+                    onClose={() => setShowChooseActionPopup(false)}
+                    onChoose={handleChooseAction}
+                />
+                {chosenAction === 'project' && (
+                    <CreateProjectForm
+                        isOpen={chosenAction === 'project'}
+                        onClose={() => setChosenAction(null)}
+                        onUpdateProjects={onPopupClose}
+                    />
+                )}
+                {chosenAction === 'requirement' && (
                     <CreateRequirementForm
-                        isOpen={isModalOpen}
-                        onClose={handleCreateRequirementClose}
+                        isOpen={chosenAction === 'requirement'}
+                        onClose={() => setChosenAction(null)}
                     />
                 )}
                 <RoundButton>P</RoundButton>

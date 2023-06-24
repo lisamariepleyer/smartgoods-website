@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../common/UserContext';
-import Modal from '../common/Modal';
+import Modal from './Modal';
 import { Button, FancyButton } from "../components/Button";
 
 function CreateRequirementForm({ isOpen, onClose }) {
-    const { uuid } = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
 
     let requirement = '';
 
@@ -78,7 +78,7 @@ function CreateRequirementForm({ isOpen, onClose }) {
         const requirementSentence = ruppsScheme ? buildRequirement() : systemRequirement;
         try {
             setLastButtonClicked('save');
-            const response = await fetch(`http://localhost:8080/requirement/save/${uuid}`, {
+            const response = await fetch('http://localhost:8080/api/v2/requirements', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
