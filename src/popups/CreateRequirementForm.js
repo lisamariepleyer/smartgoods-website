@@ -3,11 +3,12 @@ import { UserContext } from '../common/UserContext';
 import Modal from './Modal';
 import { Button, FancyButton } from "../components/Button";
 
-function CreateRequirementForm({ isOpen, onClose }) {
+function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) {
     const { currentUser } = useContext(UserContext);
 
     let requirement = '';
 
+    const [selectedProject, setSelectedProject] = useState(projects?.[0]?.projectName || '');
     const [systemName, setSystemName] = useState('The system');
     const [systemBehavior, setSystemBehavior] = useState('shall');
     const [abilityType, setAbilityType] = useState('');
@@ -18,6 +19,12 @@ function CreateRequirementForm({ isOpen, onClose }) {
     const [lastButtonClicked, setLastButtonClicked] = useState(null);
     const [ruppsScheme, setRuppsScheme] = useState(true);
     const [systemRequirement, setSystemRequirement] = useState('');
+
+    const handleProjectChange = (event) => {
+        setSelectedProject(event.target.value);
+        setSystemName(event.target.value);
+    };
+
 
     const handleSystemNameChange = (event) => {
         setSystemName(event.target.value);
@@ -42,8 +49,9 @@ function CreateRequirementForm({ isOpen, onClose }) {
     const buildRequirement = () => {
         if (abilityType === 'be able to') {
             requirement = `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord}`;
+        } else if (abilityType === "provide [whom] with the ability to") {
+            requirement = `${systemName || 'The System'} ${systemBehavior} provide ${whom} with the ability to ${processWord}`;
         }
-        requirement = `${systemName || 'The System'} ${systemBehavior} provide ${whom} with the ability to ${processWord}`;
         return(requirement);
     }
 
@@ -52,7 +60,7 @@ function CreateRequirementForm({ isOpen, onClose }) {
 
         try {
             setLastButtonClicked('check');
-            const response = await fetch('http://localhost:8080/requirement/check', {
+            const response = await fetch('http://localhost:8080/api/v2/requirements/check', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,10 +70,10 @@ function CreateRequirementForm({ isOpen, onClose }) {
 
             const responseData = await response.json();
 
-            if (responseData === true) {
+            if (responseData.ruppScheme === true) {
                 setValidationResult("Requirement is valid!");
             } else {
-                setValidationResult("Requirement is not valid!");
+                setValidationResult(`Requirement is not valid! Hint: ${responseData.hint}`);
             }
         } catch (error) {
             console.error('Failed to check the requirement:', error);
@@ -83,13 +91,13 @@ function CreateRequirementForm({ isOpen, onClose }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ requirement: requirementSentence }),
+                body: JSON.stringify({ username: currentUser, projectName: selectedProject, requirement: requirementSentence }),
             });
 
             const responseData = await response.json();
 
             setSaveRequirementStatus(responseData.message);
-
+            onUpdateProjects();
             onClose();
 
         } catch (error) {
@@ -106,6 +114,16 @@ function CreateRequirementForm({ isOpen, onClose }) {
         setSystemRequirement(event.target.value);
     };
 
+    useEffect(() => {
+        if(projects.length > 0) {
+            const firstProject = projects[0];
+            if (firstProject) {
+                setSystemName(firstProject.projectName);
+                setSelectedProject(firstProject.projectName);
+            }
+        }
+    }, [projects]);
+
 
     useEffect(() => {
         setValidationResult(null); setSaveRequirementStatus(null)
@@ -119,8 +137,22 @@ function CreateRequirementForm({ isOpen, onClose }) {
             </label>
             <br/>
             <br/>
+            <label>
+                Project:&#160;
+                <select value={selectedProject} onChange={handleProjectChange}>
+                    {projects.map((project) => (
+                        <option key={project.id} value={project.projectName}>
+                            {project.projectName}
+                        </option>
+                    ))}
+                </select>
+            </label>
+            <br/>
+            <br/>
             { ruppsScheme ? (
                 <>
+
+                    <br/>
                     <label>
                         <input className="input-field" type="text" value={systemName} placeholder={'The system'} onChange={handleSystemNameChange} />
                     </label>
