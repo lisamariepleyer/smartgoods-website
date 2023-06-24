@@ -37,6 +37,7 @@ function LoginPage() {
 
             if (username !== responseData.username) {
                 setServerResponse(responseData.info);
+                console.error('Login failed:', responseData.info);
             } else {
                 setCurrentUser(username);
                 navigate('/main');
@@ -44,7 +45,7 @@ function LoginPage() {
 
         } catch (error) {
 
-            setServerResponse(error);
+            setServerResponse('Ooops! Something went wrong. Please try again.');
             console.error('Log in failed:', error);
 
         }
@@ -71,8 +72,8 @@ function LoginPage() {
 
             if (username !== responseData.username) {
                 setServerResponse(responseData.info);
+                console.error('Registration failed:', responseData.info);
             } else {
-                setServerResponse('Registered!');
                 setIsRegistering(false);
                 setCurrentUser(username);
                 navigate('/main');
@@ -80,8 +81,8 @@ function LoginPage() {
 
         } catch (error) {
 
-            setServerResponse(error);
-            console.error('Log in failed:', error);
+            setServerResponse('Ooops! Something went wrong. Please try again.');
+            console.error('Registration failed:', error);
 
         }
 
@@ -116,6 +117,7 @@ function LoginPage() {
                 <input className="input-field" type="password" placeholder="Password" onChange={handlePasswordInput}/>
 
                 <Button onClick={handleLogin}>Login</Button>
+                {serverResponse && <warning>{serverResponse}</warning>}
             </div>
 
             { isRegistering ? (
@@ -133,8 +135,6 @@ function LoginPage() {
                     <FancyButton onClick={handleRegistrationButtonClicked}>Register</FancyButton>
                 </div>
             ) }
-
-            {serverResponse && <div>{serverResponse}</div>}
         </div>
     );
 }

@@ -185,6 +185,10 @@
     HEADERS
  */
 
+warning {
+    color: rgb(222,45,38);
+}
+
 h1 {
     color: rgb(var(--secondary-color));
     display: block;
