@@ -1,6 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 const RequirementsTable = ({ data, updateRequirements }) => {
+
+    const [hoveredRow, setHoveredRow] = useState(null);
+    const [hint, setHint] = useState(null);
+
+    const handleRowHover = (rowID, rowHint) => {
+        setHoveredRow(rowID);
+        setHint(rowHint);
+    };
 
     const handleDelete = async (id) => {
         try {
@@ -19,24 +27,39 @@ const RequirementsTable = ({ data, updateRequirements }) => {
     };
 
     return (
-        <table className="requirements-table">
-            <thead>
-            <tr>
-                <th>Validity</th>
-                <th>Requirement</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            {data.map((item) => (
-                <tr key={item.id}>
-                    <td>{item.isRuppScheme === "true" ? '✅' : '❌'}</td>
-                    <td>{item.requirement}</td>
-                    <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
+        <div>
+            <table className="requirements-table">
+                <thead>
+                <tr>
+                    <th>Validity</th>
+                    <th>Requirement</th>
+                    <th>Delete</th>
                 </tr>
-            ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {data.map((item) => (
+                    <tr>
+                        <td
+                            key={item.id}
+                            onMouseEnter={() => handleRowHover(item.id, item.hint)}
+                            onMouseLeave={() => handleRowHover(null, null)}
+                        >
+                            {item.isRuppScheme === "true" ? '✅' : '❌'}
+                            {hint && hoveredRow === item.id && (
+                                <span className="tooltip">
+                                    <span className="tooltiptext">
+                                        Hint: {hint}
+                                    </span>
+                                </span>
+                            )}
+                        </td>
+                        <td>{item.requirement}</td>
+                        <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
