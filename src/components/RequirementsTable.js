@@ -3,9 +3,11 @@ import React, {useState} from 'react';
 const RequirementsTable = ({ data, updateRequirements }) => {
 
     const [hoveredRow, setHoveredRow] = useState(null);
+    const [hint, setHint] = useState(null);
 
-    const handleRowHover = (hint) => {
-        setHoveredRow(hint);
+    const handleRowHover = (rowID, rowHint) => {
+        setHoveredRow(rowID);
+        setHint(rowHint);
     };
 
     const handleDelete = async (id) => {
@@ -36,25 +38,27 @@ const RequirementsTable = ({ data, updateRequirements }) => {
                 </thead>
                 <tbody>
                 {data.map((item) => (
-                    <tr
-                        key={item.id}
-                        onMouseEnter={() => handleRowHover(item.hint)}
-                        onMouseLeave={() => handleRowHover(null)}
-                    >
-                        <td>{item.isRuppScheme === "true" ? '✅' : '❌'}</td>
+                    <tr>
+                        <td
+                            key={item.id}
+                            onMouseEnter={() => handleRowHover(item.id, item.hint)}
+                            onMouseLeave={() => handleRowHover(null, null)}
+                        >
+                            {item.isRuppScheme === "true" ? '✅' : '❌'}
+                            {hint && hoveredRow === item.id && (
+                                <span className="tooltip">
+                                    <span className="tooltiptext">
+                                        Hint: {hint}
+                                    </span>
+                                </span>
+                            )}
+                        </td>
                         <td>{item.requirement}</td>
                         <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
                     </tr>
                 ))}
                 </tbody>
             </table>
-            {hoveredRow && (
-                <span className="tooltip">
-                    <span className="tooltiptext">
-                        Hint: {hoveredRow}
-                    </span>
-                </span>
-            )}
         </div>
     );
 };

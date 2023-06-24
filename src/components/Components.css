@@ -131,7 +131,7 @@
 }
 
 /*
-    TOOLTIP
+    TOOLTIP FOR INVALID REQUIREMENT HINTS
  */
 
 .tooltip {
@@ -141,14 +141,25 @@
 }
 .tooltip, .tooltiptext {
     visibility: hidden;
-    width: 300px;
+    width: 50%;
     background-color: rgb(var(--tertiary-color));
     color: rgb(var(--primary-color));
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    padding: 5px 5px;
+    border-radius: 4px;
+    margin-top: 15px;
     position: absolute;
     z-index: 1;
+}
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 10%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgb(var(--tertiary-color)) transparent;
 }
 .tooltip:hover, .tooltiptext {
     visibility: visible;
