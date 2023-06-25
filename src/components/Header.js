@@ -5,6 +5,7 @@ import { RoundButton } from "./Button";
 import CreateRequirementForm from "../popups/CreateRequirementForm";
 import CreateProjectForm from "../popups/CreateProjectForm"
 import ChooseActionPopup from "../popups/ChooseActionPopup";
+import AccountPopup from "../popups/AccountPopup";
 import { fetchProjects } from "../common/FetchProjects";
 import { UserContext } from "../common/UserContext";
 
@@ -26,6 +27,8 @@ const MainHeader = ({ onPopupClose, projects }) => {
     const [showChooseActionPopup, setShowChooseActionPopup] = useState(false);
     const [chosenAction, setChosenAction] = useState(null);
 
+    const [showAccountPopup, setShowAccountPopup] = useState(false);
+
     const handlePlusButton = () => {
         setShowChooseActionPopup(true);
     }
@@ -33,6 +36,10 @@ const MainHeader = ({ onPopupClose, projects }) => {
     const handleChooseAction = (action) => {
         setChosenAction(action);
         setShowChooseActionPopup(false);
+    }
+
+    const handleAccountButton = (action) => {
+        setShowAccountPopup(true);
     }
 
     const handleCreateRequirementClose = async () => {
@@ -77,7 +84,11 @@ const MainHeader = ({ onPopupClose, projects }) => {
                         onUpdateProjects={onPopupClose}
                     />
                 )}
-                <RoundButton>P</RoundButton>
+
+                <RoundButton onClick={handleAccountButton}>A</RoundButton>
+                <AccountPopup open={showAccountPopup}
+                              onClose={() => setShowAccountPopup(false)}
+                />
             </div>
         </header>
     );

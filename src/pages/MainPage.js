@@ -37,7 +37,6 @@ function MainPage() {
     return (
         <div>
             <MainHeader onPopupClose={fetchProjectsFromServer} projects={projects}/>
-            <p>Hi {currentUser.firstName}!</p>
             {projects.map(project => (
                 <div key={project.id}>
                     <Collapsible label={project.projectName} onEdit={() => handleEditProject(project)}>
