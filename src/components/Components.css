@@ -130,6 +130,11 @@
     text-align: center;
 }
 
+.requirements-table td:nth-last-child(2) {
+    width: 10px;
+    text-align: center;
+}
+
 /*
     TOOLTIP FOR INVALID REQUIREMENT HINTS
  */
