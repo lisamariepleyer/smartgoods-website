@@ -76,7 +76,7 @@ function LoginPage() {
             } else {
                 setIsRegistering(false);
                 setCurrentUser(username);
-                navigate('/main');
+                //navigate('/main');
             }
 
         } catch (error) {

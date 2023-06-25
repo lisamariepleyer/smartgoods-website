@@ -163,6 +163,9 @@ function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) 
                             <option value="shall">shall</option>
                             <option value="should">should</option>
                             <option value="will">will</option>
+                            <option value="shall not">shall not</option>
+                            <option value="should not">should not</option>
+                            <option value="will not">will not</option>
                         </select>
                     </label>
                     <br/>
