@@ -34,12 +34,29 @@ function MainPage() {
         setEditProjectFormOpen(true);
     };
 
+    const handleDeleteProject = async (project) => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/v2/projects/${project.id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                console.log(`Project with id ${project.id} deleted successfully.`);
+                fetchProjectsFromServer();
+            } else {
+                console.error('Failed to delete the project:', await response.text());
+            }
+        } catch (error) {
+            console.error('Failed to delete the project:', error);
+        }
+    };
+
     return (
         <div>
             <MainHeader onPopupClose={fetchProjectsFromServer} projects={projects}/>
             {projects.map(project => (
                 <div key={project.id}>
-                    <Collapsible label={project.projectName} onEdit={() => handleEditProject(project)}>
+                    <Collapsible label={project.projectName} onEdit={() => handleEditProject(project)} onDelete={() => handleDeleteProject(project)}>
                         <RequirementsTable data={project.requirements} updateRequirements={fetchProjectsFromServer}/>
                     </Collapsible>
                 </div>

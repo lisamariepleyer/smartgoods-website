@@ -11,7 +11,7 @@ function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) 
     const [selectedProject, setSelectedProject] = useState(projects?.[0]?.projectName || '');
     const [systemName, setSystemName] = useState('The system');
     const [systemBehavior, setSystemBehavior] = useState('shall');
-    const [abilityType, setAbilityType] = useState('');
+    const [abilityType, setAbilityType] = useState(null);
     const [whom, setWhom] = useState('');
     const [processWord, setProcessWord] = useState('');
     const [validationResult, setValidationResult] = useState(null);
@@ -35,7 +35,11 @@ function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) 
     };
 
     const handleAbilityTypeChange = (event) => {
-        setAbilityType(event.target.value);
+        if (!event.target.value) {
+            setAbilityType(null);
+        } else {
+            setAbilityType(event.target.value);
+        }
     }
 
     const handleWhomChange = (event) => {
@@ -51,6 +55,8 @@ function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) 
             requirement = `${systemName || 'The System'} ${systemBehavior} ${abilityType} ${processWord}`;
         } else if (abilityType === "provide [whom] with the ability to") {
             requirement = `${systemName || 'The System'} ${systemBehavior} provide ${whom} with the ability to ${processWord}`;
+        } else {
+            requirement = `${systemName || 'The System'} ${systemBehavior} ${processWord}`;
         }
         return(requirement);
     }
@@ -180,6 +186,11 @@ function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) 
                         provide {whom || '[whom]'} with the ability to
                     </label>
                     <br/>
+                    <label>
+                        <input type="radio" value="" checked={abilityType === null} onChange={handleAbilityTypeChange} />
+                        None
+                    </label>
+                    <br/>
                     <br/>
                     <label>
                     {(abilityType === "provide [whom] with the ability to") && (
@@ -194,9 +205,7 @@ function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) 
                     <br/>
                     <br/>
                     Full requirement:<br/>
-                    {systemBehavior && abilityType && processWord &&
-                        buildRequirement()
-                    }
+                    {systemBehavior && processWord && buildRequirement()}
                 </>
             ) : (
                 <>
