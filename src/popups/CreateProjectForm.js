@@ -46,7 +46,7 @@ function CreateProjectForm({ isOpen, onClose, onUpdateProjects }) {
             />
             <br />
             <br />
-            <Button onClick={handleSaveProject}>Save</Button>
+            <Button onClick={handleSaveProject} disabled={!projectName.trim()}>Save</Button>
         </Modal>
     );
 }

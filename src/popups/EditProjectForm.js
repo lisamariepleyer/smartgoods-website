@@ -43,7 +43,7 @@ function EditProjectForm({ isOpen, onClose, projectName, updateRequirements }) {
             </label>
             <br />
             <br />
-            <FancyButton onClick={handleSaveProject}>Save</FancyButton>
+            <Button onClick={handleSaveProject} disabled={!updatedProjectName.trim()}>Save</Button>
         </Modal>
     );
 
