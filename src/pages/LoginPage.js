@@ -39,7 +39,10 @@ function LoginPage() {
                 setServerResponse(responseData.info);
                 console.error('Login failed:', responseData.info);
             } else {
-                setCurrentUser(username);
+                const firstName = responseData.firstName;
+                const lastName = responseData.lastName;
+
+                setCurrentUser({ username, firstName, lastName });
                 navigate('/main');
             }
 
@@ -75,7 +78,7 @@ function LoginPage() {
                 console.error('Registration failed:', responseData.info);
             } else {
                 setIsRegistering(false);
-                setCurrentUser(username);
+                setCurrentUser({ username, firstName, lastName });
                 navigate('/main');
             }
 

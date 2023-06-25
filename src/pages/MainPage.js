@@ -15,14 +15,14 @@ function MainPage() {
     const [currentProject, setCurrentProject] = useState(null);
 
     useEffect(() => {
-        if (currentUser) {
+        if (currentUser.username) {
             fetchProjectsFromServer();
         }
-    }, [currentUser]);
+    }, [currentUser.username]);
 
     const fetchProjectsFromServer = async () => {
         try {
-            const response = await fetchProjects(currentUser);
+            const response = await fetchProjects(currentUser.username);
             setProjects(response);
         } catch (error) {
             throw new Error('Request failed');
@@ -37,7 +37,7 @@ function MainPage() {
     return (
         <div>
             <MainHeader onPopupClose={fetchProjectsFromServer} projects={projects}/>
-            <p>Hi {currentUser}!</p>
+            <p>Hi {currentUser.firstName}!</p>
             {projects.map(project => (
                 <div key={project.id}>
                     <Collapsible label={project.projectName} onEdit={() => handleEditProject(project)}>
