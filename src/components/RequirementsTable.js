@@ -1,9 +1,24 @@
 import React, {useState} from 'react';
+import EditRequirementForm from '../popups/EditRequirementForm';
 
 const RequirementsTable = ({ data, updateRequirements }) => {
 
     const [hoveredRow, setHoveredRow] = useState(null);
     const [hint, setHint] = useState(null);
+
+    const [editRequirementId, setEditRequirementId] = useState(null);
+    const [editRequirementText, setEditRequirementText] = useState('');
+    const [projectName, setProjectName] = useState('');
+
+    const handleEdit = (id, requirement) => {
+        setEditRequirementId(id);
+        setEditRequirementText(requirement);
+        setProjectName(projectName);
+    }
+
+    const closeEditForm = () => {
+        setEditRequirementId(null);
+    };
 
     const handleRowHover = (rowID, rowHint) => {
         setHoveredRow(rowID);
@@ -33,6 +48,7 @@ const RequirementsTable = ({ data, updateRequirements }) => {
                 <tr>
                     <th>Validity</th>
                     <th>Requirement</th>
+                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
                 </thead>
@@ -54,11 +70,20 @@ const RequirementsTable = ({ data, updateRequirements }) => {
                             )}
                         </td>
                         <td>{item.requirement}</td>
+                        <td onClick={() => handleEdit(item.id, item.requirement, item.projectName)} style={{ cursor: 'pointer' }}>🖊️</td>
                         <td onClick={() => handleDelete(item.id)} style={{ cursor: 'pointer'}}>🗑️</td>
                     </tr>
                 ))}
                 </tbody>
             </table>
+            <EditRequirementForm
+                isOpen={editRequirementId !== null}
+                requirementId={editRequirementId}
+                requirement={editRequirementText}
+                updateRequirements={updateRequirements}
+                projectName={projectName}
+                onClose={closeEditForm}
+            />
         </div>
     );
 };
