@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CollapsibleButton } from '../components/Button';
 
-const Collapsible = (props) => {
+const Collapsible = ({ label, onEdit, children }) => {
     const [collapsibleOpen, setCollapsibleOpen] = useState(false);
 
     const toggle = () => {
@@ -12,11 +12,12 @@ const Collapsible = (props) => {
         <div>
             <CollapsibleButton onClick={toggle}>
                 <span className="button-collapsible-icon">{collapsibleOpen ? '↓' : '→'}</span>
-                <span className="text">{props.label}</span>
+                <span className="text">{label}</span>
+                <span onClick={onEdit}>🖊️</span>
             </CollapsibleButton>
             {collapsibleOpen && (
                 <div className="toggle">
-                    {props.children}
+                    {children}
                 </div>
             )}
         </div>
