@@ -18,7 +18,7 @@ function CreateProjectForm({ isOpen, onClose, onUpdateProjects }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username: currentUser, projectName: projectName }),
+                body: JSON.stringify({ username: currentUser.username, projectName: projectName }),
             });
 
             const responseData = await response.json();

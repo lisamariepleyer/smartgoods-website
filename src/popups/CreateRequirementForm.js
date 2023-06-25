@@ -91,7 +91,7 @@ function CreateRequirementForm({ isOpen, onClose, projects, onUpdateProjects }) 
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username: currentUser, projectName: selectedProject, requirement: requirementSentence }),
+                body: JSON.stringify({ username: currentUser.username, projectName: selectedProject, requirement: requirementSentence }),
             });
 
             const responseData = await response.json();

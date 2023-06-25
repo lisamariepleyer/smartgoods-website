@@ -10,7 +10,7 @@ function EditProjectForm({ isOpen, onClose, projectName, updateRequirements }) {
 
     const handleSaveProject = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/v2/projects/${currentUser}`, {
+            const response = await fetch(`http://localhost:8080/api/v2/projects/${currentUser.username}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
